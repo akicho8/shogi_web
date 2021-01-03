@@ -1,48 +1,17 @@
 <template lang="pug">
 client-only
   .YomiyomiApp
-    DebugBox
-      p 手数: {{turn_offset}} / {{turn_offset_max}}
-      p SFEN: {{current_sfen}}
-      p タイトル: {{current_title}}
-      p 視点: {{abstract_viewpoint}}
-      p モード: {{sp_run_mode}}
-      p 視点: {{sp_viewpoint}}
-      p URL: {{current_url}}
-      p サイドバー {{sidebar_p}}
-
+    | {{edit_mode_sfen}}
     b-sidebar.is-unselectable.YomiyomiApp-Sidebar(fullheight right overlay v-model="sidebar_p")
       .mx-4.my-4
         .is-flex.is-justify-content-start.is-align-items-center
           b-button(@click="sidebar_toggle" icon-left="menu")
         .mt-4
           b-menu
-            b-menu-list(label="検討")
-              b-menu-item(label="ぴよ将棋" :href="piyo_shogi_app_with_params_url" :target="target_default" @click="sound_play('click')")
-              b-menu-item(label="KENTO" :href="kento_app_with_params_url" :target="target_default" @click="sound_play('click')")
-              b-menu-item(label="コピー" @click="kifu_copy_handle('kif')")
             b-menu-list(label="Action")
-              b-menu-item(label="リアルタイム共有" @click="room_code_edit" :class="{'has-text-weight-bold': this.room_code}")
-              b-menu-item(label="視点設定" @click="abstract_viewpoint_setting_handle")
               b-menu-item(label="盤面リセット" @click="reset_handle")
             b-menu-list(label="Edit")
               b-menu-item(label="局面編集" @click="mode_toggle_handle" :class="{'has-text-weight-bold': this.sp_run_mode === 'edit_mode'}")
-              b-menu-item(label="タイトル変更" @click="title_edit")
-              b-menu-item(label="棋譜の読み込み" @click="any_source_read_handle")
-            b-menu-list(label="Export")
-              b-menu-item(label="局面URLコピー" @click="current_url_copy_handle")
-              b-menu-item(label="SFEN コピー" @click="kifu_copy_handle('sfen')")
-              b-menu-item(label="KIF ダウンロード" :href="kif_download_url" @click="sound_play('click')")
-              b-menu-item(label="KIF ダウンロード (Shift_JIS)" :href="shift_jis_kif_download_url" @click="sound_play('click')")
-              b-menu-item(label="画像ダウンロード" :href="snapshot_image_url" @click="sound_play('click')")
-
-    //- b-navbar(type="is-dark" wrapper-class="container")
-    //-   template(slot="start")
-    //-     NavbarItemHome
-    //-     b-navbar-item.has-text-weight-bold(@click="title_edit") {{current_title}}
-    //-   template(slot="end")
-    //-     b-navbar-item(@click="sidebar_toggle" v-if="sp_run_mode === 'play_mode'")
-    //-       b-icon(icon="menu")
 
     MainNavbar
       template(slot="brand")
@@ -83,21 +52,16 @@ client-only
     MainSection.is_mobile_padding_zero
       .container
         .columns.is-centered
-          .column.is-8-tablet.is-5-desktop
-            .turn_container.has-text-centered(v-if="sp_run_mode === 'play_mode' && false")
-              span.turn_offset.has-text-weight-bold {{turn_offset}}
-              template(v-if="turn_offset_max && (turn_offset < turn_offset_max)")
-                span.mx-1.has-text-grey /
-                span.has-text-grey {{turn_offset_max}}
+          .column(v-if="sp_run_mode === 'play_mode'")
+            b-button(@click="saisei_handle") 再生
 
-            // sp_bg_variant="is_bg_variant_a"
+          .column.is-8-tablet.is-5-desktop(v-if="sp_run_mode === 'edit_mode'")
             CustomShogiPlayer(
               :sp_layer="development_p ? 'is_layer_off' : 'is_layer_off'"
               :sp_run_mode="sp_run_mode"
               :sp_turn="turn_offset"
               :sp_body="current_sfen"
               :sp_sound_enabled="true"
-              :sp_viewpoint.sync="sp_viewpoint"
               sp_summary="is_summary_off"
               sp_slider="is_slider_on"
               sp_controller="is_controller_on"
@@ -115,22 +79,6 @@ client-only
 
             .room_code.is-clickable(@click="room_code_edit" v-if="false")
               | {{room_code}}
-
-        .columns(v-if="development_p")
-          .column.is-clipped
-            .buttons
-              b-button(tag="a" :href="json_debug_url") JSON
-            .block
-              b JS側で作った動的なTwitter画像URL(指定設定プレビューで使用する。Rails側と一致していること)
-              p(:key="twitter_card_url") {{twitter_card_url}}
-              img.is-block(:src="twitter_card_url" width="256")
-            .block
-              b Rails側で作った静的なTwitter画像URL(og:imageにはこっちを指定している)
-              p {{config.twitter_card_options.image}}
-              img.is-block(:src="config.twitter_card_options.image" width="256")
-            .block
-              b this.record
-              pre {{JSON.stringify(record, null, 4)}}
 </template>
 
 <script>
@@ -143,7 +91,6 @@ import { support_parent } from "./support_parent.js"
 import { app_room      } from "./app_room.js"
 import { app_room_init } from "./app_room_init.js"
 
-import AbstractViewpointKeySelectModal from "./AbstractViewpointKeySelectModal.vue"
 import AnySourceReadModal         from "@/components/AnySourceReadModal.vue"
 
 export default {
@@ -170,7 +117,6 @@ export default {
       abstract_viewpoint: this.config.record.abstract_viewpoint, // Twitter画像の向き
 
       // urlには反映しない
-      sp_viewpoint: this.config.record.board_viewpoint,       // 反転用
       turn_offset_max: null,                         // 最後の手数
 
       record: this.config.record, // バリデーション目的だったが自由になったので棋譜コピー用だけのためにある
@@ -203,6 +149,19 @@ export default {
     })
   },
   methods: {
+    saisei_handle() {
+      this.$axios.$post("/api/yomiyomi.json", {sfen: this.edit_mode_sfen}).then(e => {
+        if (e.bs_error) {
+          this.bs_error_message_dialog(e.bs_error)
+        }
+        if (e.body) {
+          this.toast_ok("正常に読み込みました")
+          // this.current_sfen = e.body
+          // this.turn_offset = e.turn_max
+        }
+      })
+    },
+
     sidebar_toggle() {
       this.sound_play('click')
       this.sidebar_p = !this.sidebar_p
@@ -259,16 +218,7 @@ export default {
       this.sound_play("click")
 
       if (this.sp_run_mode === "play_mode") {
-        if (this.abstract_viewpoint === "self") {
-          this.toast_ok(`
-局面を公開したときの画像の視点やURLを開いたときの視点が、デフォルトではリレー将棋向けになっているので、
-詰将棋を公開する場合は視点設定を先手固定に変更するのがおすすめです`, {duration: 1000 * 10})
-        }
-
         this.sp_run_mode = "edit_mode"
-        if (true) {
-          this.sp_viewpoint = "black" // ▲視点にしておく(お好み)
-        }
       } else {
         this.sp_run_mode = "play_mode"
 
@@ -335,30 +285,6 @@ export default {
       })
     },
 
-    // 視点設定変更
-    abstract_viewpoint_setting_handle() {
-      this.sidebar_p = false
-      this.sound_play("click")
-      this.$buefy.modal.open({
-        component: AbstractViewpointKeySelectModal,
-        parent: this,
-        trapFocus: true,
-        hasModalCard: true,
-        animation: "",
-        props: {
-          abstract_viewpoint: this.abstract_viewpoint,
-          permalink_for: this.permalink_for,
-        },
-        onCancel: () => this.sound_play("click"),
-        events: {
-          "update:abstract_viewpoint": v => {
-            this.abstract_viewpoint = v
-          }
-        },
-      })
-    },
-
-    // 棋譜の読み込みタップ時の処理
     any_source_read_handle() {
       this.sidebar_p = false
       this.sound_play("click")
@@ -378,7 +304,6 @@ export default {
                 this.toast_ok("正常に読み込みました")
                 this.current_sfen = e.body
                 this.turn_offset = e.turn_max
-                this.sp_viewpoint = "black"
               }
             })
           },
@@ -450,10 +375,6 @@ export default {
     // URL
     current_url()                { return this.permalink_for()                                                                        },
     json_debug_url()             { return this.permalink_for({format: "json"})                                                        },
-    twitter_card_url()           { return this.permalink_for({format: "png"})                                                         },
-    snapshot_image_url()         { return this.permalink_for({format: "png", image_viewpoint: this.sp_viewpoint, disposition: "attachment"}) }, // abstract_viewpoint より image_viewpoint の方が優先される
-    kif_download_url()           { return this.permalink_for({format: "kif", disposition: "attachment"})                              },
-    shift_jis_kif_download_url() { return this.permalink_for({format: "kif", disposition: "attachment", body_encode: "Shift_JIS"})                              },
 
     // 外部アプリ
     piyo_shogi_app_with_params_url() {
