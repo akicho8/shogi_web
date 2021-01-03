@@ -1,7 +1,7 @@
 <template lang="pug">
 client-only
   .YomiyomiApp
-    | {{edit_mode_sfen}}
+    | {{current_sfen}}
     b-sidebar.is-unselectable.YomiyomiApp-Sidebar(fullheight right overlay v-model="sidebar_p")
       .mx-4.my-4
         .is-flex.is-justify-content-start.is-align-items-center
@@ -66,7 +66,6 @@ client-only
               sp_slider="is_slider_on"
               sp_controller="is_controller_on"
               sp_human_side="both"
-              @update:play_mode_advanced_full_moves_sfen="play_mode_advanced_full_moves_sfen_set"
               @update:edit_mode_snapshot_sfen="edit_mode_snapshot_sfen_set"
               @update:mediator_snapshot_sfen="mediator_snapshot_sfen_set"
               @update:turn_offset="v => turn_offset = v"
@@ -88,17 +87,12 @@ import _ from "lodash"
 
 import { support_parent } from "./support_parent.js"
 
-import { app_room      } from "./app_room.js"
-import { app_room_init } from "./app_room_init.js"
-
 import AnySourceReadModal         from "@/components/AnySourceReadModal.vue"
 
 export default {
   name: "YomiyomiApp",
   mixins: [
     support_parent,
-    app_room,
-    app_room_init,
   ],
   props: {
     config: { type: Object, required: true },
@@ -121,7 +115,7 @@ export default {
 
       record: this.config.record, // バリデーション目的だったが自由になったので棋譜コピー用だけのためにある
       sp_run_mode: this.defval(this.$route.query.sp_run_mode, RUN_MODE_DEFAULT),  // 操作モードと局面編集モードの切り替え用
-      edit_mode_sfen: null,     // 局面編集モードの局面
+      current_sfen: null,     // 局面編集モードの局面
 
       sidebar_p: false,
     }
@@ -131,7 +125,7 @@ export default {
     this.$watch(() => [
       this.sp_run_mode,
       this.current_sfen,
-      this.edit_mode_sfen,      // 編集モード中でもURLを変更したいため
+      this.current_sfen,      // 編集モード中でもURLを変更したいため
       this.turn_offset,
       this.current_title,
       this.abstract_viewpoint,
@@ -150,7 +144,7 @@ export default {
   },
   methods: {
     saisei_handle() {
-      this.$axios.$post("/api/yomiyomi.json", {sfen: this.edit_mode_sfen}).then(e => {
+      this.$axios.$post("/api/yomiyomi.json", {sfen: this.current_sfen}).then(e => {
         if (e.bs_error) {
           this.bs_error_message_dialog(e.bs_error)
         }
@@ -167,11 +161,7 @@ export default {
       this.sidebar_p = !this.sidebar_p
     },
 
-    // 再生モードで指したときmovesあり棋譜(URLに反映する)
-    play_mode_advanced_full_moves_sfen_set(v) {
-      this.current_sfen = v
-      this.sfen_share(this.current_sfen)
-    },
+    // this.sfen_share(this.current_sfen)
 
     // デバッグ用
     mediator_snapshot_sfen_set(sfen) {
@@ -186,7 +176,7 @@ export default {
     // ・すぐに反映しないのは駒箱が消えてしまうから
     edit_mode_snapshot_sfen_set(v) {
       if (this.sp_run_mode === "edit_mode") { // 操作モードでも呼ばれるから
-        this.edit_mode_sfen = v
+        this.current_sfen = v
       }
     },
 
@@ -225,10 +215,6 @@ export default {
         // 局面編集から操作モードに戻した瞬間に局面編集モードでの局面を反映しURLを更新する
         // 局面編集モードでの変化をそのまま current_sfen に反映しない理由は駒箱の駒が消えるため
         // 消えるのはsfenに駒箱の情報が含まれないから
-        if (this.edit_mode_sfen) {
-          this.current_sfen = this.edit_mode_sfen
-          this.edit_mode_sfen = null
-        }
       }
     },
 
@@ -401,7 +387,7 @@ export default {
     advanced_p() { return this.turn_offset > this.config.record.initial_turn },
 
     // 常に画面上の盤面と一致している
-    current_body() { return this.edit_mode_sfen || this.current_sfen },
+    current_body() { return this.current_sfen || this.current_sfen },
 
     tweet_body() {
       let o = ""

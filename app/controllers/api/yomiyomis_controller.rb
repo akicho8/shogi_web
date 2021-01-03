@@ -50,6 +50,20 @@ module Api
       kif_data_send
     end
 
+    def create
+      info = Bioshogi::Parser.parse(params[:sfen])
+      info.
+      
+    end
+    
+    
+    
+    
+    
+    
+    
+    
+    
     def config_params
       {
         record: current_json,
