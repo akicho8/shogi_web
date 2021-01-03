@@ -1,3 +1,4 @@
+
 Rails.application.routes.draw do
   root "tops#show"
 
@@ -162,6 +163,7 @@ Rails.application.routes.draw do
     resources :users
     resource :cpu_battle, only: [:show, :create]
     resource :share_board, only: [:show, :create]
+    resource :yomiyomi, only: [:show, :create]
     resource :three_stage_league, only: [:show]
     resource :three_stage_league_player, only: [:show]
     resource :swars_grade_histogram, only: [:show]
