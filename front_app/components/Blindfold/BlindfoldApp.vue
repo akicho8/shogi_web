@@ -9,15 +9,15 @@ client-only
           b-menu
             b-menu-list(label="Action")
               b-menu-item(label="局面編集" @click="mode_toggle_handle")
-              b-menu-item(label="Tweet"    @click="tweet_handle")
+              //- b-menu-item(label="Tweet"    @click="tweet_handle")
 
     MainNavbar
       template(slot="brand")
         NavbarItemHome
         b-navbar-item.has-text-weight-bold(tag="nuxt-link" :to="{name: 'blindfold'}") {{current_title}}
       template(slot="end")
-        //- b-navbar-item.has-text-weight-bold(@click="tweet_handle" v-if="sp_run_mode === 'play_mode'")
-        //-   b-icon(icon="twitter" type="is-white")
+        b-navbar-item.has-text-weight-bold(@click="tweet_handle" v-if="sp_run_mode === 'play_mode'")
+          b-icon(icon="twitter" type="is-white")
         b-navbar-item.has-text-weight-bold(@click="mode_toggle_handle" v-if="sp_run_mode === 'edit_mode'")
           | 編集完了
         b-navbar-item(@click="sidebar_toggle" v-if="sp_run_mode === 'play_mode'")
@@ -27,7 +27,7 @@ client-only
       .container
         .columns.is-centered
           .column(v-if="sp_run_mode === 'play_mode'")
-            .buttons.is-centered
+            .buttons.is-centered.are-medium
               template(v-if="talk_now")
                 b-button(@click="stop_handle" icon-left="stop")
               template(v-else)
@@ -176,9 +176,13 @@ export default {
     margin-top: 2em
 
 .BlindfoldApp
+  .buttons
+    .button
+      min-width: 6rem
+
   .MainSection.section
     +mobile
-      padding: 0.75rem 0 0
+      padding: 4rem 0 0
   .EditToolBlock
     margin-top: 12px
 </style>
