@@ -14,19 +14,18 @@ export default {
   },
   mounted() {
     if (_.isEmpty(this.$route.query)) {
-      this.ga_click("共有将棋盤")
+      this.ga_click("目隠し詰将棋")
     } else {
-      this.ga_click("共有将棋盤●")
+      this.ga_click("目隠し詰将棋●")
     }
   },
   computed: {
     meta() {
       return {
-        short_title: true,
-        title: this.config.twitter_card_options.title,
-        description: "リレー将棋・詰将棋の作成や公開・課題局面の作成や公開・オンライン対局向けリアルタイム盤共有などが可能です",
-        og_description: this.config.twitter_card_options.description,
-        og_image: this.config.twitter_card_options.image,
+        title: "目隠し詰将棋",
+        description: "",
+        og_image_key: "yomiyomi",
+        twitter_card_is_small: true,
       }
     }
   },

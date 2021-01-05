@@ -29,10 +29,10 @@ export class HeadGenerator {
 
     this.h.meta = []
 
-    this.ordered_fech("title", ["title"])
-    this.ordered_fech("og:title", ["og_title", "title"])
-    this.ordered_fech("description", ["description"])
-    this.ordered_fech("og:description", ["og_description", "description"])
+    this.ordered_fetch("title", ["title"])
+    this.ordered_fetch("og:title", ["og_title", "title"])
+    this.ordered_fetch("description", ["description"])
+    this.ordered_fetch("og:description", ["og_description", "description"])
 
     this.image_set()
 
@@ -70,7 +70,7 @@ export class HeadGenerator {
     }
   }
 
-  ordered_fech(hkey, keys) {
+  ordered_fetch(hkey, keys) {
     const key = keys.find(e => e in this.meta) // 空文字列はスルーされてしまうので仕方なく has_key? でチェック
     if (key) {
       this.set(hkey, this.meta[key])

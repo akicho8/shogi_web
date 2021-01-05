@@ -29,15 +29,15 @@ client-only
           .column(v-if="sp_run_mode === 'play_mode'")
             .buttons.is-centered
               template(v-if="talk_now")
-                b-button(@click="yomiage_stop_handle" icon-left="stop")
+                b-button(@click="stop_handle" icon-left="stop")
               template(v-else)
-                b-button(@click="yomiage_play_handle" icon-left="play")
+                b-button(@click="play_handle" icon-left="play")
 
           .column.is-8-tablet.is-5-desktop(v-if="sp_run_mode === 'edit_mode'")
             CustomShogiPlayer(
-              :sp_run_mode="sp_run_mode"
               :sp_body="sp_body"
               :sp_sound_enabled="true"
+              sp_run_mode="edit_mode"
               sp_summary="is_summary_off"
               sp_slider="is_slider_on"
               sp_controller="is_controller_on"
@@ -54,8 +54,6 @@ import _ from "lodash"
 
 import { support_parent } from "./support_parent.js"
 
-import AnySourceReadModal         from "@/components/AnySourceReadModal.vue"
-
 export default {
   name: "YomiyomiApp",
   mixins: [
@@ -68,12 +66,9 @@ export default {
     return {
       yomiage_body: null,
       talk_now: false,
-
       sp_body: null,
-      current_title:       "目隠し将棋",               // 現在のタイトル
-
+      current_title: "目隠し詰将棋",
       sp_run_mode: "play_mode",
-
       sidebar_p: false,
     }
   },
@@ -81,7 +76,6 @@ export default {
     this.sp_body = this.$route.query.body || "position sfen 4k4/9/4G4/9/9/9/9/9/9 b G2r2b2g4s4n4l18p 1"
   },
   mounted() {
-    // どれかが変更されたらURLを更新
     this.$watch(() => [
       this.sp_body,
     ], () => {
@@ -89,13 +83,13 @@ export default {
     })
   },
   methods: {
-    async yomiage_play_handle() {
+    async play_handle() {
       if (!this.yomiage_body) {
         await this.$axios.$post("/api/yomiyomi.json", {sfen: this.sp_body}).then(e => {
           if (e.bs_error) {
             this.bs_error_message_dialog(e.bs_error)
           }
-          if (e.yomiage) {
+          if (e.yomiage_body) {
             this.yomiage_body = e.yomiage_body
           }
         })
@@ -107,7 +101,7 @@ export default {
       }
     },
 
-    yomiage_stop_handle() {
+    stop_handle() {
       this.talk_stop()
       this.talk_now = false
     },
@@ -132,46 +126,28 @@ export default {
     mode_toggle_handle() {
       this.sidebar_p = false
       this.sound_play("click")
-
+      this.yomiage_body = null
       if (this.sp_run_mode === "play_mode") {
         this.sp_run_mode = "edit_mode"
-        this.yomiage_body = null
       } else {
         this.sp_run_mode = "play_mode"
       }
-    },
-
-    // ../../../app/controllers/yomiyomis_controller.rb の current_og_image_path と一致させること
-    permalink_for(params = {}) {
-      let url = null
-      url = new URL(this.$config.MY_SITE_URL + `/yomiyomi`)
-
-      params = {
-        ...this.current_url_params,
-        ...params,
-      }
-
-      _.each(params, (v, k) => {
-        url.searchParams.set(k, v)
-      })
-
-      return url.toString()
     },
   },
 
   computed: {
     current_url_params() {
-      const params = {
+      return {
         body: this.sp_body,
       }
-      return params
     },
-
-    // URL
-    current_url() { return this.permalink_for() },
-
-    ////////////////////////////////////////////////////////////////////////////////
-
+    current_url() {
+      let url = new URL(this.$config.MY_SITE_URL + `/yomiyomi`)
+      _.each(this.current_url_params, (v, k) => {
+        url.searchParams.set(k, v)
+      })
+      return url.toString()
+    },
     tweet_body() {
       let o = ""
       o += "\n"
@@ -196,11 +172,6 @@ export default {
       border: 1px dashed change_color($success, $alpha: 0.5)
 
 .YomiyomiApp-Sidebar
-  // .sidebar-content
-  //   width: unset
-
-  // .menu-label:not(:first-child)
-  //   margin-top: 1.5em
   .menu-label
     margin-top: 2em
 
@@ -208,7 +179,6 @@ export default {
   .MainSection.section
     +mobile
       padding: 0.75rem 0 0
-
   .EditToolBlock
     margin-top: 12px
 </style>
