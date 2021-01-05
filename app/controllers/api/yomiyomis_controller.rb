@@ -56,7 +56,7 @@ module Api
 
     def create
       info = Bioshogi::Parser.parse(params[:sfen])
-      render json: { yomiage: info.to_yomiage }
+      render json: { yomiage_body: info.to_yomiage }
     end
 
     def config_params
