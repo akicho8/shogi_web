@@ -9,16 +9,13 @@ client-only
         .mt-4
           b-menu
             b-menu-list(label="Action")
-              b-menu-item(label="盤面リセット" @click="reset_handle")
-            b-menu-list(label="Edit")
               b-menu-item(label="局面編集" @click="mode_toggle_handle" :class="{'has-text-weight-bold': this.sp_run_mode === 'edit_mode'}")
 
     MainNavbar
       template(slot="brand")
         NavbarItemHome
-        b-navbar-item.has-text-weight-bold(@click="title_edit")
+        b-navbar-item.has-text-weight-bold
           | {{current_title}}
-          span.mx-1(v-if="sp_run_mode === 'play_mode' && turn_offset >= 1") \#{{turn_offset}}
       template(slot="end")
         b-navbar-item.has-text-weight-bold(@click="tweet_handle" v-if="sp_run_mode === 'play_mode'")
           b-icon(icon="twitter" type="is-white")
@@ -27,39 +24,19 @@ client-only
         b-navbar-item(@click="sidebar_toggle" v-if="sp_run_mode === 'play_mode'")
           b-icon(icon="menu")
 
-        //- template(v-if="sp_run_mode === 'play_mode'")
-        //-   b-navbar-item(@click="reset_handle") 盤面リセット
-        //-   b-navbar-item(@click="any_source_read_handle") 棋譜の読み込み
-        //-   b-navbar-item(@click="kifu_copy_handle('kif')") 棋譜コピー
-        //-   b-navbar-item(@click="mode_toggle_handle") 局面編集
-        //-   b-navbar-item(@click="abstract_viewpoint_setting_handle") 視点設定
-        //-   b-navbar-dropdown(hoverable arrowless right label="その他")
-        //-     b-navbar-item(:href="piyo_shogi_app_with_params_url" :target="target_default") ぴよ将棋
-        //-     b-navbar-item(:href="kento_app_with_params_url" :target="target_default") KENTO
-        //-     b-navbar-item(:href="snapshot_image_url" @click="sound_play('click')") 局面画像の取得
-        //-     b-navbar-item(:href="kif_download_url" @click="sound_play('click')") 棋譜ダウンロード
-        //-     b-navbar-item(@click="title_edit") タイトル編集
-        //-     b-navbar-item(@click="kifu_copy_handle('sfen')") SFENコピー
-        //-     template(v-if="sp_run_mode === 'play_mode'")
-        //-       b-navbar-item(@click="room_code_edit")
-        //-         | リアルタイム共有
-        //-         .has-text-danger.ml-1(v-if="room_code") {{room_code}}
-
-    b-navbar(type="is-dark" fixed-bottom v-if="development_p")
-      template(slot="start")
-        b-navbar-item(@click="reset_handle") 盤面リセット
-
     MainSection.is_mobile_padding_zero
       .container
         .columns.is-centered
           .column(v-if="sp_run_mode === 'play_mode'")
-            b-button(@click="saisei_handle") 再生
+            .buttons.is-centered
+              template(v-if="talk_now")
+                b-button(@click="stop_handle" icon-left="stop")
+              template(v-else)
+                b-button(@click="saisei_handle" icon-left="play")
 
           .column.is-8-tablet.is-5-desktop(v-if="sp_run_mode === 'edit_mode'")
             CustomShogiPlayer(
-              :sp_layer="development_p ? 'is_layer_off' : 'is_layer_off'"
               :sp_run_mode="sp_run_mode"
-              :sp_turn="turn_offset"
               :sp_body="current_sfen"
               :sp_sound_enabled="true"
               sp_summary="is_summary_off"
@@ -71,13 +48,6 @@ client-only
               @update:turn_offset="v => turn_offset = v"
               @update:turn_offset_max="v => turn_offset_max = v"
             )
-
-            .buttons.is-centered.mt-4
-              TweetButton(:body="tweet_body" :type="advanced_p ? 'is-twitter' : ''" v-if="sp_run_mode === 'play_mode'")
-              //- b-button(@click="mode_toggle_handle" v-if="sp_run_mode === 'edit_mode'") 編集完了
-
-            .room_code.is-clickable(@click="room_code_edit" v-if="false")
-              | {{room_code}}
 </template>
 
 <script>
@@ -97,16 +67,13 @@ export default {
   props: {
     config: { type: Object, required: true },
   },
-    meta() {
-    return {
-      title: this.page_title,
-    }
-  },
   data() {
     return {
-      // watch して url に反映するもの
-      current_sfen:        this.config.record.sfen_body,           // 渡している棋譜
-      current_title:       this.config.record.title,               // 現在のタイトル
+      yomiage_body: null,
+      talk_now: false,
+
+      current_sfen:        this.defval(this.$route.query.body, "position sfen 4k4/9/4G4/9/9/9/9/9/9 b G2r2b2g4s4n4l18p 1"),
+      current_title:       "目隠し将棋",               // 現在のタイトル
       turn_offset:         this.config.record.initial_turn,        // 現在の手数
       abstract_viewpoint: this.config.record.abstract_viewpoint, // Twitter画像の向き
 
@@ -127,7 +94,6 @@ export default {
       this.current_sfen,
       this.current_sfen,      // 編集モード中でもURLを変更したいため
       this.turn_offset,
-      this.current_title,
       this.abstract_viewpoint,
       this.room_code,
     ], () => {
@@ -143,20 +109,27 @@ export default {
     })
   },
   methods: {
-    saisei_handle() {
-      this.$axios.$post("/api/yomiyomi.json", {sfen: this.current_sfen}).then(e => {
-        if (e.bs_error) {
-          this.bs_error_message_dialog(e.bs_error)
-        }
-        if (e.body) {
-          this.toast_ok("正常に読み込みました")
-          // this.current_sfen = e.body
-          // this.turn_offset = e.turn_max
-        }
-        if (e.yomiage) {
-          this.toast_ok(e.yomiage)
-        }
-      })
+    async saisei_handle() {
+      if (!this.yomiage_body) {
+        await this.$axios.$post("/api/yomiyomi.json", {sfen: this.current_sfen}).then(e => {
+          if (e.bs_error) {
+            this.bs_error_message_dialog(e.bs_error)
+          }
+          if (e.yomiage) {
+            this.yomiage_body = e.yomiage
+          }
+        })
+      }
+      if (this.yomiage_body) {
+        this.talk_stop()
+        this.talk_now = true
+        this.talk(this.yomiage_body, {rate: 1.0, onend: () => this.talk_now = false})
+      }
+    },
+
+    stop_handle() {
+      this.talk_stop()
+      this.talk_now = false
     },
 
     sidebar_toggle() {
@@ -212,92 +185,10 @@ export default {
 
       if (this.sp_run_mode === "play_mode") {
         this.sp_run_mode = "edit_mode"
+        this.yomiage_body = null
       } else {
         this.sp_run_mode = "play_mode"
-
-        // 局面編集から操作モードに戻した瞬間に局面編集モードでの局面を反映しURLを更新する
-        // 局面編集モードでの変化をそのまま current_sfen に反映しない理由は駒箱の駒が消えるため
-        // 消えるのはsfenに駒箱の情報が含まれないから
       }
-    },
-
-    // private
-
-    // url_replace() {
-    //   this.$router.replace({query: this.current_url_params})
-    // },
-
-    // タイトル編集
-    title_edit() {
-      this.sidebar_p = false
-      this.sound_play("click")
-      this.$buefy.dialog.prompt({
-        title: "タイトル",
-        confirmText: "更新",
-        cancelText: "キャンセル",
-        inputAttrs: { type: "text", value: this.current_title, required: false },
-        onCancel: () => this.sound_play("click"),
-        onConfirm: value => {
-          this.sound_play("click")
-          this.current_title_set(value)
-        },
-      })
-    },
-
-    current_title_set(title) {
-      this.current_title = _.trim(title)
-      this.title_share(this.current_title)
-    },
-
-    room_code_edit() {
-      this.sidebar_p = false
-      this.sound_play("click")
-      this.$buefy.dialog.prompt({
-        title: "リアルタイム共有",
-        size: "is-small",
-        message: `
-          <div class="content">
-            <ul>
-              <li>同じ合言葉を設定した人とリアルタイムに盤を共有できます</li>
-              <li>合言葉を設定したら同じ合言葉を相手に伝えてください</li>
-              <li>合言葉はURLにも付加するのでURLを伝えてもかまいません</li>
-            </ul>
-          </div>`,
-        confirmText: "設定",
-        cancelText: "キャンセル",
-        inputAttrs: { type: "text", value: this.room_code, required: false },
-        onCancel: () => this.sound_play("click"),
-        onConfirm: value => {
-          this.sound_play("click")
-          this.room_code_set(value)
-        },
-      })
-    },
-
-    any_source_read_handle() {
-      this.sidebar_p = false
-      this.sound_play("click")
-      this.$buefy.modal.open({
-        parent: this,
-        hasModalCard: true,
-        animation: "",
-        component: AnySourceReadModal,
-        onCancel: () => this.sound_play("click"),
-        events: {
-          "update:any_source": any_source => {
-            this.$axios.$post("/api/general/any_source_to.json", {any_source: any_source, to_format: "sfen"}).then(e => {
-              if (e.bs_error) {
-                this.bs_error_message_dialog(e.bs_error)
-              }
-              if (e.body) {
-                this.toast_ok("正常に読み込みました")
-                this.current_sfen = e.body
-                this.turn_offset = e.turn_max
-              }
-            })
-          },
-        },
-      })
     },
 
     // ../../../app/controllers/yomiyomis_controller.rb の current_og_image_path と一致させること
@@ -325,39 +216,16 @@ export default {
 
       return url.toString()
     },
-
-    // 盤面のみ最初の状態に戻す
-    reset_handle() {
-      this.sidebar_p = false
-      this.sound_play("click")
-      this.current_sfen = this.config.record.sfen_body        // 渡している棋譜
-      this.turn_offset  = this.config.record.initial_turn     // 現在の手数
-      this.toast_ok("盤面を最初の状態に戻しました")
-    },
   },
 
   computed: {
-    page_title() {
-      return `${this.current_title} ${this.turn_offset}手目`
-    },
-
     current_url_params() {
       const params = {
-        body:         this.current_body, // 編集モードでもURLを更新するため
-        turn:         this.turn_offset,
-        title:        this.current_title,
+        body:               this.current_body, // 編集モードでもURLを更新するため
+        turn:               this.turn_offset,
         abstract_viewpoint: this.abstract_viewpoint,
-      }
 
-      if (this.room_code) {
-        params["room_code"] = this.room_code
       }
-
-      // 編集モードでの状態を維持したいのでURLに含めておく
-      if (this.sp_run_mode !== "play_mode") {
-        params["sp_run_mode"] = this.sp_run_mode
-      }
-
       return params
     },
 
@@ -418,8 +286,8 @@ export default {
       border: 1px dashed change_color($success, $alpha: 0.5)
 
 .YomiyomiApp-Sidebar
-  .sidebar-content
-    width: unset
+  // .sidebar-content
+  //   width: unset
 
   // .menu-label:not(:first-child)
   //   margin-top: 1.5em

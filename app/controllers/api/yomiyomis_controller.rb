@@ -4,6 +4,10 @@ module Api
     include KifShowMod
     include ShogiErrorRescueMod
 
+    # before_action do
+    #   params[:body] ||= "position sfen 4k4/9/4G4/9/9/9/9/9/9 b G2r2b2g4s4n4l18p 1"
+    # end
+
     def show
       # # slack_message(key: "Yomiyomi", body: {
       # #     "request.format"        => request.format,
@@ -65,41 +69,17 @@ module Api
     def twitter_card_options
       {
         :title       => current_page_title,
-        :image       => current_og_image_path,
-        :description => params[:description].presence || current_record.simple_versus_desc || "",
+        :image       => "",
+        :description => "",
       }
     end
 
     def current_title
-      params[:title].presence || "共有将棋盤"
+      params[:title].presence || "目隠し将棋"
     end
 
     def current_page_title
       [current_title, turn_full_message].compact.join(" ")
-    end
-
-    # これは JS 側で作る手もある。そうすればリアルタイムに更新できる。が、og:image なのでリアルタイムな必要がない。迷う。
-    # API 単体として使う場合は API の方で作っておいた方が都合がよい
-    # ので、こっちで作るのであってる
-    # http://0.0.0.0:3000/api/yomiyomi.json?turn=1&title=%E3%81%82%E3%81%84%E3%81%88%E3%81%86%E3%81%8A
-    def current_og_image_path
-      # if true
-      #   # params[:image_viewpoint] が渡せていないけどこれでいい
-      #   # url_for([:yomiyomi, body: current_record.sfen_body, only_path: false, format: "png", turn: initial_turn, image_viewpoint: image_viewpoint])
-      # else
-      #   # params[:image_viewpoint] をそのまま渡すために params にマージしないといけない
-      #   # url_for([:yomiyomi, params.to_unsafe_h.merge(body: current_record.sfen_body, format: "png")])
-      # end
-
-      # ../../front_app/components/Yomiyomi/YomiyomiApp.vue の permalink_for と一致させること
-      args = params.to_unsafe_h.except(:action, :controller, :format).merge({
-                                                                              :turn             => initial_turn,
-                                                                              :title            => current_title,
-                                                                              :body             => current_record.sfen_body,
-                                                                              :abstract_viewpoint => abstract_viewpoint,
-                                                                            })
-
-      "/share-board.png?#{args.to_query}"
     end
 
     private
@@ -129,12 +109,6 @@ module Api
                             :board_viewpoint        => board_viewpoint,
                             :abstract_viewpoint => abstract_viewpoint,
                             :title               => current_title,
-                          })
-
-      # リアルタイム共有
-      attrs = attrs.merge({
-                            :room_code => params[:room_code] || "",
-                            :user_code => SecureRandom.hex,
                           })
 
       attrs
