@@ -1,7 +1,7 @@
 <template lang="pug">
 client-only
-  .YomiyomiApp
-    b-sidebar.is-unselectable.YomiyomiApp-Sidebar(fullheight right overlay v-model="sidebar_p")
+  .BlindfoldApp
+    b-sidebar.is-unselectable.BlindfoldApp-Sidebar(fullheight right overlay v-model="sidebar_p")
       .mx-4.my-4
         .is-flex.is-justify-content-start.is-align-items-center
           b-button(@click="sidebar_toggle" icon-left="menu")
@@ -55,7 +55,7 @@ import _ from "lodash"
 import { support_parent } from "./support_parent.js"
 
 export default {
-  name: "YomiyomiApp",
+  name: "BlindfoldApp",
   mixins: [
     support_parent,
   ],
@@ -85,7 +85,7 @@ export default {
   methods: {
     async play_handle() {
       if (!this.yomiage_body) {
-        await this.$axios.$post("/api/yomiyomi.json", {sfen: this.sp_body}).then(e => {
+        await this.$axios.$post("/api/blindfold.json", {sfen: this.sp_body}).then(e => {
           if (e.bs_error) {
             this.bs_error_message_dialog(e.bs_error)
           }
@@ -142,7 +142,7 @@ export default {
       }
     },
     current_url() {
-      let url = new URL(this.$config.MY_SITE_URL + `/yomiyomi`)
+      let url = new URL(this.$config.MY_SITE_URL + `/blindfold`)
       _.each(this.current_url_params, (v, k) => {
         url.searchParams.set(k, v)
       })
@@ -164,18 +164,18 @@ export default {
 @import "./support.sass"
 
 .STAGE-development
-  .YomiyomiApp
+  .BlindfoldApp
     .CustomShogiPlayer
     .ShogiPlayerGround
     .ShogiPlayerWidth
     .Membership
       border: 1px dashed change_color($success, $alpha: 0.5)
 
-.YomiyomiApp-Sidebar
+.BlindfoldApp-Sidebar
   .menu-label
     margin-top: 2em
 
-.YomiyomiApp
+.BlindfoldApp
   .MainSection.section
     +mobile
       padding: 0.75rem 0 0

@@ -1,8 +1,8 @@
-module Yomiyomi
+module Blindfold
   class RoomChannel < ApplicationCable::Channel
     def subscribed
       return reject unless room_code
-      stream_from "yomiyomi/room_channel/#{room_code}"
+      stream_from "blindfold/room_channel/#{room_code}"
     end
 
     def board_info_request(data)
@@ -27,7 +27,7 @@ module Yomiyomi
 
     def broadcast(bc_action, bc_params)
       raise ArgumentError, bc_params.inspect unless bc_params.values.all?
-      ActionCable.server.broadcast("yomiyomi/room_channel/#{room_code}", {bc_action: bc_action, bc_params: bc_params})
+      ActionCable.server.broadcast("blindfold/room_channel/#{room_code}", {bc_action: bc_action, bc_params: bc_params})
     end
   end
 end

@@ -1,4 +1,4 @@
-module YomiyomiMod
+module BlindfoldMod
   extend ActiveSupport::Concern
 
   class_methods do
@@ -17,7 +17,7 @@ module YomiyomiMod
       end
       body = body.sub(Bioshogi::Sfen::STARTPOS_EXPANSION, "startpos")
       sfen_hash = Digest::MD5.hexdigest(body)
-      find_by(sfen_hash: sfen_hash, use_key: :yomiyomi) || create!(kifu_body: body, use_key: :yomiyomi)
+      find_by(sfen_hash: sfen_hash, use_key: :blindfold) || create!(kifu_body: body, use_key: :blindfold)
     end
   end
 end

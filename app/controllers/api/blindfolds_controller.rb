@@ -1,5 +1,5 @@
 module Api
-  class YomiyomisController < ::Api::ApplicationController
+  class BlindfoldsController < ::Api::ApplicationController
     include EncodeMod
     include KifShowMod
     include ShogiErrorRescueMod
@@ -9,7 +9,7 @@ module Api
     # end
 
     def show
-      # # slack_message(key: "Yomiyomi", body: {
+      # # slack_message(key: "Blindfold", body: {
       # #     "request.format"        => request.format,
       # #     "request.format.blank?" => request.format.blank?,
       # #     "request.format.html?"  => request.format.html?,

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Yomiyomi::RoomChannel, type: :channel do
+RSpec.describe Blindfold::RoomChannel, type: :channel do
   before(:context) do
     Actb.setup
   end
@@ -32,7 +32,7 @@ RSpec.describe Yomiyomi::RoomChannel, type: :channel do
       }
       expect {
         subscription.sfen_share(data)
-      }.to have_broadcasted_to("yomiyomi/room_channel/#{room_code}").with(bc_action: "sfen_share_broadcasted", bc_params: data)
+      }.to have_broadcasted_to("blindfold/room_channel/#{room_code}").with(bc_action: "sfen_share_broadcasted", bc_params: data)
     end
   end
 
@@ -48,7 +48,7 @@ RSpec.describe Yomiyomi::RoomChannel, type: :channel do
       }
       expect {
         subscription.title_share(data)
-      }.to have_broadcasted_to("yomiyomi/room_channel/#{room_code}").with(bc_action: "title_share_broadcasted", bc_params: data)
+      }.to have_broadcasted_to("blindfold/room_channel/#{room_code}").with(bc_action: "title_share_broadcasted", bc_params: data)
     end
   end
 end

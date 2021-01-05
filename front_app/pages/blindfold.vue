@@ -1,15 +1,15 @@
 <template lang="pug">
-YomiyomiApp(:config="config")
+BlindfoldApp(:config="config")
 </template>
 
 <script>
 import _ from "lodash"
 
 export default {
-  name: "yomiyomi",
+  name: "blindfold",
   async asyncData({ $axios, query }) {
-    // http://0.0.0.0:3000/api/yomiyomi
-    const config = await $axios.$get("/api/yomiyomi", {params: query})
+    // http://0.0.0.0:3000/api/blindfold
+    const config = await $axios.$get("/api/blindfold", {params: query})
     return { config }
   },
   mounted() {
@@ -24,7 +24,7 @@ export default {
       return {
         title: "目隠し詰将棋",
         description: "",
-        og_image_key: "yomiyomi",
+        og_image_key: "blindfold",
         twitter_card_is_small: true,
       }
     }

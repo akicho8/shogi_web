@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe YomiyomisController, type: :controller do
+RSpec.describe BlindfoldsController, type: :controller do
   it "HTMLの要求はNuxt側にリダイレクト" do
     get :show, params: { }
     expect(response).to have_http_status(:redirect)
@@ -66,7 +66,7 @@ end
 # >> 
 # >> Failures:
 # >> 
-# >>   1) YomiyomisController Twitterカード用の画像パス
+# >>   1) BlindfoldsController Twitterカード用の画像パス
 # >>      Failure/Error: Unable to find - to read failed line
 # >>      # -:57:in `block (2 levels) in <main>'
 # >>      # ./spec/support/database_cleaner.rb:18:in `block (3 levels) in <main>'
@@ -77,5 +77,5 @@ end
 # >> 
 # >> Failed examples:
 # >> 
-# >> rspec -:54 # YomiyomisController Twitterカード用の画像パス
+# >> rspec -:54 # BlindfoldsController Twitterカード用の画像パス
 # >> 
