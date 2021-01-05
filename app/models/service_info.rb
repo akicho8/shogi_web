@@ -204,9 +204,9 @@ class ServiceInfo
       title: "目隠し詰将棋",
       new_p: true,
       og_image_key: "blindfold",
-      description: "配置を聞いて脳内で構成して解く超難しいやつ",
+      description: "脳内で将棋盤を作って解く練習",
       features: [
-        "試作なのでしょぼいです",
+        "試作なので最低限の機能のみ",
       ],
     },
   ]
