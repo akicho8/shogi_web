@@ -21,6 +21,12 @@ RSpec.describe "その他", type: :system do
     doc_image
   end
 
+  it "目隠し詰将棋" do
+    visit "http://localhost:4000/blindfold"
+    expect(page).to have_content "目隠し詰将棋"
+    doc_image
+  end
+
   # it "ストップウォッチ" do
   #   visit "/stopwatch"
   #   expect(page).to have_content "Rails"

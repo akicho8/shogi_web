@@ -39,6 +39,7 @@ LIST_ALL = [
   { url: "/training",                                                                validations: { "title" => /トレーニング/,                                                                                                                                      }},
   { url: "/style-editor",                                                            validations: { "title" => /スタイルエディタ/,                                                                                                                                   }},
   { url: "/practical-checkmate",                                                     validations: { "title" => /実戦詰将棋/,                                                                                                                                   }},
+  { url: "/blindfold",                                                               validations: { "title" => /目隠し詰将棋/,                                                                                                                                   }},
 ]
 
 require "bundler/setup"
