@@ -153,6 +153,9 @@ export default {
           // this.current_sfen = e.body
           // this.turn_offset = e.turn_max
         }
+        if (e.yomiage) {
+          this.toast_ok(e.yomiage)
+        }
       })
     },
 
