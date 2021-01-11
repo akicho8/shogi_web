@@ -1,6 +1,6 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # if Rails.env.development? || Rails.env.test?
 #   Warning[:deprecated] = false
@@ -14,6 +14,8 @@ module ShogiWeb
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+
+    # https://qiita.com/suketa/items/09ebd4fbbd22fea9033d
     config.add_autoload_paths_to_load_path = false # $LOAD_PATH を使わず zeitwerk だけにすると速くなる
 
     # Settings in config/environments/* take precedence over those specified here.
@@ -22,6 +24,7 @@ module ShogiWeb
     # the framework and any gems in your application.
 
     config.time_zone = "Tokyo"
+    # config.eager_load_paths << Rails.root.join("extras")
     config.i18n.default_locale = :ja
     config.colorize_logging = false
     config.before_configuration do

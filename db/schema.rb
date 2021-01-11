@@ -2,17 +2,17 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_29_171907) do
+ActiveRecord::Schema.define(version: 2021_01_11_090941) do
 
-  create_table "actb_bad_marks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_bad_marks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "question_id", null: false, comment: "出題"
     t.datetime "created_at", precision: 6, null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_bad_marks_on_user_id"
   end
 
-  create_table "actb_battle_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_battle_memberships", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "battle_id", null: false, comment: "対戦"
     t.bigint "user_id", null: false, comment: "対戦者"
     t.bigint "judge_id", null: false, comment: "勝敗"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_battle_memberships_on_user_id"
   end
 
-  create_table "actb_battles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_battles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "room_id", null: false, comment: "部屋"
     t.bigint "parent_id", comment: "親"
     t.bigint "rule_id", null: false, comment: "ルール"
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["rule_id"], name: "index_actb_battles_on_rule_id"
   end
 
-  create_table "actb_clip_marks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_clip_marks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "question_id", null: false, comment: "出題"
     t.datetime "created_at", precision: 6, null: false
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_clip_marks_on_user_id"
   end
 
-  create_table "actb_emotion_folders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_emotion_folders", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_actb_emotion_folders_on_position"
   end
 
-  create_table "actb_emotions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_emotions", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "所有者"
     t.bigint "folder_id", null: false, comment: "フォルダ"
     t.string "name", null: false, comment: "トリガー名"
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_emotions_on_user_id"
   end
 
-  create_table "actb_finals", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_finals", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_actb_finals_on_position"
   end
 
-  create_table "actb_folders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_folders", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "type", null: false, comment: "for STI"
     t.datetime "created_at", precision: 6, null: false
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_folders_on_user_id"
   end
 
-  create_table "actb_good_marks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_good_marks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "question_id", null: false, comment: "出題"
     t.datetime "created_at", precision: 6, null: false
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_good_marks_on_user_id"
   end
 
-  create_table "actb_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_histories", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "question_id", null: false, comment: "出題"
     t.bigint "room_id", comment: "対戦部屋"
@@ -128,7 +128,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_histories_on_user_id"
   end
 
-  create_table "actb_judges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_judges", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_actb_judges_on_position"
   end
 
-  create_table "actb_lineages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_lineages", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -144,7 +144,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_actb_lineages_on_position"
   end
 
-  create_table "actb_lobby_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_lobby_messages", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "対戦者"
     t.string "body", limit: 512, null: false, comment: "発言"
     t.datetime "created_at", precision: 6, null: false
@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_lobby_messages_on_user_id"
   end
 
-  create_table "actb_main_xrecords", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_main_xrecords", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "対戦者"
     t.bigint "judge_id", null: false, comment: "直前の勝敗"
     t.bigint "final_id", null: false, comment: "直前の結果"
@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["win_rate"], name: "index_actb_main_xrecords_on_win_rate"
   end
 
-  create_table "actb_moves_answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_moves_answers", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "question_id", null: false, comment: "問題"
     t.integer "moves_count", null: false, comment: "N手"
     t.string "moves_str", null: false, comment: "連続した指し手"
@@ -204,7 +204,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["question_id"], name: "index_actb_moves_answers_on_question_id"
   end
 
-  create_table "actb_notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_notifications", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "question_message_id", null: false, comment: "問題コメント"
     t.bigint "user_id", null: false, comment: "通知先"
     t.datetime "opened_at", comment: "開封日時"
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_notifications_on_user_id"
   end
 
-  create_table "actb_ox_marks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_ox_marks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false, comment: "正解・不正解"
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -223,7 +223,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_actb_ox_marks_on_position"
   end
 
-  create_table "actb_ox_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_ox_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "question_id", null: false, comment: "問題"
     t.integer "o_count", null: false, comment: "正解数"
     t.integer "x_count", null: false, comment: "不正解数"
@@ -238,7 +238,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["x_count"], name: "index_actb_ox_records_on_x_count"
   end
 
-  create_table "actb_question_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_question_messages", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "発言者"
     t.bigint "question_id", null: false, comment: "問題"
     t.string "body", limit: 512, null: false, comment: "発言"
@@ -248,7 +248,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_question_messages_on_user_id"
   end
 
-  create_table "actb_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_questions", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.bigint "user_id", null: false, comment: "作成者"
     t.bigint "folder_id", null: false, comment: "フォルダ"
@@ -293,7 +293,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_questions_on_user_id"
   end
 
-  create_table "actb_room_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_room_memberships", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "room_id", null: false, comment: "対戦部屋"
     t.bigint "user_id", null: false, comment: "対戦者"
     t.integer "position", null: false, comment: "順序"
@@ -305,7 +305,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_room_memberships_on_user_id"
   end
 
-  create_table "actb_room_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_room_messages", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "対戦者"
     t.bigint "room_id", null: false, comment: "対戦部屋"
     t.string "body", limit: 512, null: false, comment: "発言"
@@ -315,7 +315,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_room_messages_on_user_id"
   end
 
-  create_table "actb_rooms", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_rooms", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.datetime "begin_at", null: false, comment: "対戦開始日時"
     t.datetime "end_at", comment: "対戦終了日時"
     t.bigint "rule_id", null: false, comment: "ルール"
@@ -331,7 +331,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["rule_id"], name: "index_actb_rooms_on_rule_id"
   end
 
-  create_table "actb_rules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_rules", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -339,7 +339,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_actb_rules_on_position"
   end
 
-  create_table "actb_season_xrecords", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_season_xrecords", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "judge_id", null: false, comment: "直前の勝敗"
     t.bigint "final_id", null: false, comment: "直前の結果"
     t.integer "battle_count", null: false, comment: "対戦数"
@@ -386,7 +386,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["win_rate"], name: "index_actb_season_xrecords_on_win_rate"
   end
 
-  create_table "actb_seasons", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_seasons", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false, comment: "レーティング"
     t.integer "generation", null: false, comment: "世代"
     t.datetime "begin_at", null: false, comment: "期間開始日時"
@@ -398,7 +398,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["generation"], name: "index_actb_seasons_on_generation"
   end
 
-  create_table "actb_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_settings", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "rule_id", null: false, comment: "選択ルール"
     t.string "session_lock_token", comment: "複数開いていてもSTARTを押したユーザーを特定できる超重要なトークン"
@@ -408,7 +408,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_actb_settings_on_user_id"
   end
 
-  create_table "actb_skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_skills", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -416,7 +416,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_actb_skills_on_position"
   end
 
-  create_table "actb_source_abouts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_source_abouts", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -424,7 +424,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_actb_source_abouts_on_position"
   end
 
-  create_table "actb_vs_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "actb_vs_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "battle_id", null: false, comment: "対戦"
     t.string "sfen_body", limit: 1536, null: false, comment: "棋譜"
     t.datetime "created_at", precision: 6, null: false
@@ -432,7 +432,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["battle_id"], name: "index_actb_vs_records_on_battle_id"
   end
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -442,7 +442,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -450,16 +450,23 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "alert_logs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "alert_logs", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "subject", null: false
     t.string "body", limit: 8192, null: false
     t.datetime "created_at", null: false
   end
 
-  create_table "auth_infos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "auth_infos", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "ユーザー"
     t.string "provider", null: false, comment: "何経由でログインしたか"
     t.string "uid", null: false, comment: "長い内部ID(providerとペアではユニーク)"
@@ -468,7 +475,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_auth_infos_on_user_id"
   end
 
-  create_table "cpu_battle_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "cpu_battle_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", comment: "ログインしているならそのユーザー"
     t.string "judge_key", null: false, comment: "結果"
     t.datetime "created_at", null: false
@@ -477,7 +484,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_cpu_battle_records_on_user_id"
   end
 
-  create_table "emox_bad_marks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_bad_marks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "question_id", null: false, comment: "出題"
     t.datetime "created_at", precision: 6, null: false
@@ -487,7 +494,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_bad_marks_on_user_id"
   end
 
-  create_table "emox_battle_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_battle_memberships", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "battle_id", null: false, comment: "対戦"
     t.bigint "user_id", null: false, comment: "対戦者"
     t.bigint "judge_id", null: false, comment: "勝敗"
@@ -501,7 +508,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_battle_memberships_on_user_id"
   end
 
-  create_table "emox_battles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_battles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "room_id", null: false, comment: "部屋"
     t.bigint "parent_id", comment: "親"
     t.bigint "rule_id", null: false, comment: "ルール"
@@ -521,7 +528,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["rule_id"], name: "index_emox_battles_on_rule_id"
   end
 
-  create_table "emox_clip_marks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_clip_marks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "question_id", null: false, comment: "出題"
     t.datetime "created_at", precision: 6, null: false
@@ -531,7 +538,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_clip_marks_on_user_id"
   end
 
-  create_table "emox_emotion_folders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_emotion_folders", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -539,7 +546,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_emox_emotion_folders_on_position"
   end
 
-  create_table "emox_emotions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_emotions", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "所有者"
     t.bigint "folder_id", null: false, comment: "フォルダ"
     t.string "name", null: false, comment: "トリガー名"
@@ -553,7 +560,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_emotions_on_user_id"
   end
 
-  create_table "emox_finals", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_finals", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -561,7 +568,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_emox_finals_on_position"
   end
 
-  create_table "emox_folders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_folders", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "type", null: false, comment: "for STI"
     t.datetime "created_at", precision: 6, null: false
@@ -570,7 +577,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_folders_on_user_id"
   end
 
-  create_table "emox_good_marks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_good_marks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "question_id", null: false, comment: "出題"
     t.datetime "created_at", precision: 6, null: false
@@ -580,7 +587,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_good_marks_on_user_id"
   end
 
-  create_table "emox_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_histories", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "question_id", null: false, comment: "出題"
     t.bigint "room_id", comment: "対戦部屋"
@@ -593,7 +600,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_histories_on_user_id"
   end
 
-  create_table "emox_judges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_judges", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -601,7 +608,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_emox_judges_on_position"
   end
 
-  create_table "emox_lineages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_lineages", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -609,7 +616,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_emox_lineages_on_position"
   end
 
-  create_table "emox_lobby_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_lobby_messages", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "対戦者"
     t.string "body", limit: 512, null: false, comment: "発言"
     t.datetime "created_at", precision: 6, null: false
@@ -617,7 +624,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_lobby_messages_on_user_id"
   end
 
-  create_table "emox_main_xrecords", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_main_xrecords", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "対戦者"
     t.bigint "judge_id", null: false, comment: "直前の勝敗"
     t.bigint "final_id", null: false, comment: "直前の結果"
@@ -657,7 +664,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["win_rate"], name: "index_emox_main_xrecords_on_win_rate"
   end
 
-  create_table "emox_moves_answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_moves_answers", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "question_id", null: false, comment: "問題"
     t.integer "moves_count", null: false, comment: "N手"
     t.string "moves_str", null: false, comment: "連続した指し手"
@@ -669,7 +676,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["question_id"], name: "index_emox_moves_answers_on_question_id"
   end
 
-  create_table "emox_notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_notifications", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "question_message_id", null: false, comment: "問題コメント"
     t.bigint "user_id", null: false, comment: "通知先"
     t.datetime "opened_at", comment: "開封日時"
@@ -679,7 +686,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_notifications_on_user_id"
   end
 
-  create_table "emox_ox_marks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_ox_marks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false, comment: "正解・不正解"
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -688,7 +695,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_emox_ox_marks_on_position"
   end
 
-  create_table "emox_ox_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_ox_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "question_id", null: false, comment: "問題"
     t.integer "o_count", null: false, comment: "正解数"
     t.integer "x_count", null: false, comment: "不正解数"
@@ -703,7 +710,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["x_count"], name: "index_emox_ox_records_on_x_count"
   end
 
-  create_table "emox_question_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_question_messages", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "発言者"
     t.bigint "question_id", null: false, comment: "問題"
     t.string "body", limit: 512, null: false, comment: "発言"
@@ -713,7 +720,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_question_messages_on_user_id"
   end
 
-  create_table "emox_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_questions", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.bigint "user_id", null: false, comment: "作成者"
     t.bigint "folder_id", null: false, comment: "フォルダ"
@@ -758,7 +765,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_questions_on_user_id"
   end
 
-  create_table "emox_room_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_room_memberships", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "room_id", null: false, comment: "対戦部屋"
     t.bigint "user_id", null: false, comment: "対戦者"
     t.integer "position", null: false, comment: "順序"
@@ -770,7 +777,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_room_memberships_on_user_id"
   end
 
-  create_table "emox_room_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_room_messages", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "対戦者"
     t.bigint "room_id", null: false, comment: "対戦部屋"
     t.string "body", limit: 512, null: false, comment: "発言"
@@ -780,7 +787,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_room_messages_on_user_id"
   end
 
-  create_table "emox_rooms", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_rooms", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.datetime "begin_at", null: false, comment: "対戦開始日時"
     t.datetime "end_at", comment: "対戦終了日時"
     t.bigint "rule_id", null: false, comment: "ルール"
@@ -796,7 +803,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["rule_id"], name: "index_emox_rooms_on_rule_id"
   end
 
-  create_table "emox_rules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_rules", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -804,7 +811,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_emox_rules_on_position"
   end
 
-  create_table "emox_season_xrecords", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_season_xrecords", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "judge_id", null: false, comment: "直前の勝敗"
     t.bigint "final_id", null: false, comment: "直前の結果"
     t.integer "battle_count", null: false, comment: "対戦数"
@@ -851,7 +858,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["win_rate"], name: "index_emox_season_xrecords_on_win_rate"
   end
 
-  create_table "emox_seasons", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_seasons", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false, comment: "レーティング"
     t.integer "generation", null: false, comment: "世代"
     t.datetime "begin_at", null: false, comment: "期間開始日時"
@@ -863,7 +870,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["generation"], name: "index_emox_seasons_on_generation"
   end
 
-  create_table "emox_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_settings", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "自分"
     t.bigint "rule_id", null: false, comment: "選択ルール"
     t.string "session_lock_token", comment: "複数開いていてもSTARTを押したユーザーを特定できる超重要なトークン"
@@ -873,7 +880,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_emox_settings_on_user_id"
   end
 
-  create_table "emox_skills", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_skills", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -881,7 +888,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_emox_skills_on_position"
   end
 
-  create_table "emox_source_abouts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_source_abouts", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -889,7 +896,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_emox_source_abouts_on_position"
   end
 
-  create_table "emox_vs_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "emox_vs_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "battle_id", null: false, comment: "対戦"
     t.string "sfen_body", limit: 1536, null: false, comment: "棋譜"
     t.datetime "created_at", precision: 6, null: false
@@ -897,7 +904,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["battle_id"], name: "index_emox_vs_records_on_battle_id"
   end
 
-  create_table "free_battles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "free_battles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false, collation: "utf8_bin", comment: "URL識別子"
     t.string "kifu_url", comment: "入力した棋譜URL"
     t.string "title"
@@ -929,7 +936,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_free_battles_on_user_id"
   end
 
-  create_table "profiles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "profiles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "ユーザー"
     t.string "description", limit: 512, null: false, comment: "自己紹介"
     t.string "twitter_key", null: false
@@ -938,7 +945,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
   end
 
-  create_table "swars_battles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "swars_battles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false, comment: "対局識別子"
     t.datetime "battled_at", null: false, comment: "対局開始日時"
     t.string "rule_key", null: false, comment: "ルール"
@@ -969,7 +976,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["win_user_id"], name: "index_swars_battles_on_win_user_id"
   end
 
-  create_table "swars_crawl_reservations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "swars_crawl_reservations", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "登録者"
     t.string "target_user_key", null: false, comment: "対象者"
     t.string "to_email", null: false, comment: "完了通知先メールアドレス"
@@ -981,7 +988,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_swars_crawl_reservations_on_user_id"
   end
 
-  create_table "swars_grades", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "swars_grades", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "priority", null: false, comment: "優劣"
     t.datetime "created_at", null: false
@@ -990,7 +997,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["priority"], name: "index_swars_grades_on_priority"
   end
 
-  create_table "swars_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "swars_memberships", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "battle_id", null: false, comment: "対局"
     t.bigint "user_id", null: false, comment: "対局者"
     t.bigint "op_user_id", comment: "相手"
@@ -1018,14 +1025,14 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_swars_memberships_on_user_id"
   end
 
-  create_table "swars_search_logs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "swars_search_logs", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "プレイヤー"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_swars_search_logs_on_user_id"
   end
 
-  create_table "swars_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "swars_users", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "user_key", null: false, comment: "対局者名"
     t.bigint "grade_id", null: false, comment: "最高段級"
     t.datetime "last_reception_at", comment: "受容日時"
@@ -1038,7 +1045,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_key"], name: "index_swars_users_on_user_key", unique: true
   end
 
-  create_table "swars_zip_dl_logs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "swars_zip_dl_logs", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "登録者"
     t.bigint "swars_user_id", null: false, comment: "対象者"
     t.string "query", null: false, comment: "クエリ全体(予備)"
@@ -1052,7 +1059,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_swars_zip_dl_logs_on_user_id"
   end
 
-  create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -1071,13 +1078,13 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "tags", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", collation: "utf8_bin"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "ts_master_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "ts_master_questions", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "sfen", null: false
     t.integer "mate", null: false
     t.integer "position", null: false
@@ -1086,7 +1093,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_ts_master_questions_on_position"
   end
 
-  create_table "ts_master_rules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "ts_master_rules", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", null: false
@@ -1094,7 +1101,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_ts_master_rules_on_position"
   end
 
-  create_table "ts_master_time_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "ts_master_time_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id"
     t.string "entry_name", null: false
     t.string "summary"
@@ -1108,14 +1115,14 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["user_id"], name: "index_ts_master_time_records_on_user_id"
   end
 
-  create_table "tsl_leagues", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "tsl_leagues", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "generation", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["generation"], name: "index_tsl_leagues_on_generation"
   end
 
-  create_table "tsl_memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "tsl_memberships", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "league_id", null: false
     t.bigint "user_id", null: false
     t.string "result_key", null: false, comment: "結果"
@@ -1138,7 +1145,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["win"], name: "index_tsl_memberships_on_win"
   end
 
-  create_table "tsl_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "tsl_users", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false
     t.integer "first_age", comment: "リーグ入り年齢"
     t.integer "last_age", comment: "リーグ最後の年齢"
@@ -1151,7 +1158,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["name"], name: "index_tsl_users_on_name", unique: true
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false, comment: "キー"
     t.string "name", null: false, comment: "名前"
     t.string "user_agent", null: false, comment: "ブラウザ情報"
@@ -1184,7 +1191,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  create_table "xy_master_rules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "xy_master_rules", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.integer "position", null: false
     t.datetime "created_at", null: false
@@ -1192,7 +1199,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
     t.index ["position"], name: "index_xy_master_rules_on_position"
   end
 
-  create_table "xy_master_time_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "xy_master_time_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "rule_id", null: false, comment: "ルール"
     t.string "entry_name", null: false
@@ -1256,6 +1263,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_171907) do
   add_foreign_key "actb_settings", "users"
   add_foreign_key "actb_vs_records", "actb_battles", column: "battle_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "emox_bad_marks", "emox_questions", column: "question_id"
   add_foreign_key "emox_bad_marks", "users"
   add_foreign_key "emox_battle_memberships", "emox_battles", column: "battle_id"

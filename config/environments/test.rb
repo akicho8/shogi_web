@@ -1,3 +1,5 @@
+require "active_support/core_ext/integer/time"
+
 # The test environment is used exclusively to run your application's
 # test suite. You never need to work with it otherwise. Remember that
 # your test database is "scratch space" for the test suite and is wiped
@@ -44,18 +46,15 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  # Raise exceptions for disallowed deprecations.
+  config.active_support.disallowed_deprecation = :raise
+
+  # Tell Active Support which deprecation messages to disallow.
+  config.active_support.disallowed_deprecation_warnings = []
+
   # Raises error for missing translations.
-  # config.action_view.raise_on_missing_translations = true
+  # config.i18n.raise_on_missing_translations = true
 
-  ################################################################################
-
-  # https://qiita.com/upinetree/items/41a2a8fe9e1dd7c291ab
-  # ↓これは効いてないっぽい。結局 spec で perform_enqueued_jobs ブロックを使うことで同期実行するようにしている
-  config.active_job.queue_adapter = :sidekiq
-
-  # for AppConfig
-  config.to_prepare do
-    Rails.application.config.app_config.deep_merge!({
-      })
-  end
+  # Annotate rendered view with file names.
+  # config.action_view.annotate_rendered_view_with_filenames = true
 end
